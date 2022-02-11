@@ -1,0 +1,4 @@
+fix play message
+create player queue
+stop
+pause and resume
