@@ -1,7 +1,7 @@
 module.exports = {
     name: "ready",
     once: true,
-    execute(client) {
+    handleEvent(client) {
         console.log(`Logged in as ${client.user.tag}!`);
 
         client.user.setPresence({

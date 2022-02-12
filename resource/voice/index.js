@@ -13,6 +13,7 @@ module.exports = class VoiceConnection {
             console.log('Connection is in the Ready state!');
         });
 
+
         connection.on(VoiceConnectionStatus.Disconnected, async (oldState, newState) => {
             try {
                 await Promise.race([

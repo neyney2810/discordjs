@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/kanaria2810/discordjs#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.5.3",
     "@discordjs/rest": "^0.2.0-canary.0",
     "@discordjs/voice": "^0.8.0",
+    "ascii-table": "^0.0.9",
     "discord-api-types": "^0.26.1",
+    "discord-player": "^5.2.2",
     "discord.js": "^13.6.0",
     "ffmpeg-static": "^4.4.1",
     "libsodium-wrappers": "^0.7.9",

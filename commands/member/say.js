@@ -11,4 +11,11 @@ module.exports = {
     async execute(interaction) {
         await interaction.reply(interaction.options.getString('message'));
     },
+
+    handleMessage(message) {
+        console.log(message.client);
+        const args = message.content.split(' ');
+        args.shift();
+        message.channel.send(args.join(' '));          
+    }
 };

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js')
+const { MessageActionRow, MessageButton } = require('discord.js')
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -39,5 +39,9 @@ module.exports = {
 		// 		.setDescription('Some description here')
 		// await interaction.reply({ content: 'Pong!', ephemeral: true, embeds: [embed], components: [row] })
 
+	},
+
+	handleMessage(message) {
+		message.channel.send(`Ping: ${message.client.ws.ping}ms`);
 	},
 };
