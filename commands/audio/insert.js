@@ -31,5 +31,5 @@ module.exports = {
 
         queue.insert(track);
         return await interaction.followUp(` 👌 | Next song: **${track.title}**! `);
-    },
+    }
 };
