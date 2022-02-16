@@ -13,7 +13,6 @@ module.exports = {
     },
 
     handleMessage(message) {
-        console.log(message.client);
         const args = message.content.split(' ');
         args.shift();
         message.channel.send(args.join(' '));          

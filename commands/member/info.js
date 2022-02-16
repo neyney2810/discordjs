@@ -1,4 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const handleUser = require('./user');
+const handleServer = require('./server')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,15 +16,17 @@ module.exports = {
 				
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === 'user') {
-			const user = interaction.options.getUser('target');
-
-			if (user) {
-				await interaction.reply(`Username: ${user.username}\nID: ${user.id}`);
-			} else {
-				await interaction.reply(`Your username: ${interaction.user.username}\nYour ID: ${interaction.user.id}`);
-			}
+			await handleUser.execute(interaction);
 		} else if (interaction.options.getSubcommand() === 'server') {
-			await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
+			await handleServer.execute(interaction);
 		}
 	},
+
+	handleMessage(message) {
+		if (interaction.options.getSubcommand() === 'user') {
+			handleUser.handleMessage(message);
+		} else if (interaction.options.getSubcommand() === 'server') {
+			handleServer.handleMessage(message);
+		}
+	}
 };

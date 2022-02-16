@@ -1,8 +1,19 @@
 const { readdirSync } = require('fs');
 const { Client, Intents, Collection } = require('discord.js');
-const { token } = require('./config.json');
+const { createPool } = require('mysql2/promise');
+const { token, mysql: dbConfig } = require('./config.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+
+//Db connection
+client.mysql = createPool({
+  host: dbConfig.host,
+  port: dbConfig.port || 3306,
+  user: dbConfig.username,
+  password: dbConfig.password,
+  database: dbConfig.database,
+  charset: dbConfig.charset
+});
 
 //Command files
 client.commands = new Collection();
@@ -25,5 +36,16 @@ for (const file of eventFiles) {
     client.on(event.name, (...args) => event.handleEvent(...args));
   }
 }
+
+//Button Handlers
+client.buttonHandlers = new Collection();
+readdirSync('./buttons/').filter(file => !file.includes('.')).forEach(dir => {
+  const commandFiles = readdirSync(`./buttons/${dir}/`).filter(file => file.endsWith('.js'))
+  for (const file of commandFiles) {
+    const button = require(`./buttons/${dir}/${file}`);
+    client.buttonHandlers.set(button.label, button);
+  }
+});
+
 
 client.login(token);

@@ -15,6 +15,21 @@ module.exports = {
         const queue = interaction.client.player.getQueue(interaction.guild);
         queue.shuffle();
 
-        return await interaction.reply(queue.toString());
-    }
+        return await interaction.reply(getQueueEmbed(queue));
+    },
+
+    handleMessage(message) {
+        this.execute(message);
+    },
 };
+
+function getQueueEmbed(queue) {
+    
+    const list = queue.tracks.map((track, index) => {
+        if (index < 15) return `${index+1}. ** ${track.title}**\n`;
+        if (index == 15) return `And **${queue.tracks.length - 15}** more...`;
+    });
+
+    return list.join('');
+
+}

@@ -1,25 +1,24 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-
 const { checkAudioCommandPermission, checkPlayerRunning } = require('../../resource/utils');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('prev')
-        .setDescription('Jump to previous track'),
-    aliases: ['next' ] ,
+        .setName('clear')
+        .setDescription('Clear this queue'),
     async execute(interaction) {
+        
         if (!checkAudioCommandPermission(interaction)) 
             return await interaction.reply({ content: "Can not do this command!", ephemeral: true });
 
         if (!checkPlayerRunning(interaction)) 
-            return await interaction.reply({ content: "Can not back as no player is active!", ephemeral: true });
+            return await interaction.reply({ content: "Can not clear as no player is running!", ephemeral: true });
 
         const queue = interaction.client.player.getQueue(interaction.guild);
-        queue.back();
-        return await interaction.reply(`👌 | Jump to previous track`);
+        queue.clear();
+
+        return await interaction.reply(` 👌 | Queue clear! `);
     },
 
-    
     handleMessage(message) {
         this.execute(message);
     },

@@ -13,7 +13,11 @@ module.exports = {
             return await interaction.reply({ content: "Can not show queue as no player is active!", ephemeral: true });
 
         const queue = interaction.client.player.getQueue(interaction.guild);
+        return await interaction.reply({content: queue.toString().slice(0,2000), ephemeral: true});
+    },
 
-        return await interaction.reply(queue.toString());
-    }
+    handleMessage(message) {
+        this.execute(message);
+    },
+
 };

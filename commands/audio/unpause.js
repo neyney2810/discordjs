@@ -19,4 +19,8 @@ module.exports = {
 
         return await interaction.reply(` 👌 | Continue playing! `);
     },
+
+    handleMessage(message) {
+        this.execute(message);
+    },
 };

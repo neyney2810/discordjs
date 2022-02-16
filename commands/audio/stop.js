@@ -18,4 +18,8 @@ module.exports = {
 
         return await interaction.reply(` 👌 | Player stop! `);
     },
+    
+    handleMessage(message) {
+        this.execute(message);
+    },
 };

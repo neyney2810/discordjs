@@ -30,4 +30,9 @@ module.exports = {
             .setDescription(`🎶 | Now playing: **${currentTrack.title}** \n ${progressBar}`)
         return await interaction.reply({ embeds: [messageEmbed], ephemeral: true });
     },
+
+    
+    handleMessage(message) {
+        this.execute(message);
+    },
 };

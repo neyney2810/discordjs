@@ -20,4 +20,8 @@ module.exports = {
 
         return await interaction.reply(` No track to skip! `);
     },
+    
+    handleMessage(message) {
+        this.execute(message);
+    },
 };

@@ -19,4 +19,9 @@ module.exports = {
 
         return await interaction.reply(` 👌 | Player paused! `);
     },
+
+    
+    handleMessage(message) {
+        this.execute(message);
+    },
 };

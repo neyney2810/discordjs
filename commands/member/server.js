@@ -21,25 +21,10 @@ module.exports = {
             )
             .setTimestamp()
             .setFooter({ text: 'From NeyNey with luv!' });
-        await interaction.reply({ embeds: [serverEmbed] });
+        return await interaction.reply({ embeds: [serverEmbed] });
     },
 
     async handleMessage(message) {
-        const guild = await message.client.guilds.fetch(message.guildId);
-        const owner = await guild.members.fetch(guild.ownerId);
-        const channels = await guild.channels.fetch();
-        // inside a command, event listener, etc.
-        const serverEmbed = new MessageEmbed()
-            .setColor('AQUA')
-            .setTitle(guild.name)
-            .setThumbnail(guild.iconURL())
-            .addFields(
-                { name: 'Owner', value: `@${owner.user.username}#${owner.user.discriminator}`},
-                { name: 'Number of users', value: `${guild.memberCount}`, inline: true },
-                { name: 'Number of channels', value: `${channels.size}`, inline: true }
-            )
-            .setTimestamp()
-            .setFooter({ text: 'From NeyNey with luv!' });
-        message.channel.send({ embeds: [serverEmbed] });
+        this.execute(message);
     }
 };

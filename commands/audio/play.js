@@ -22,6 +22,9 @@ module.exports = {
 
         const player = interaction.client.player || ( () => {
             let player = new Player(interaction.client, { filter: "audioonly" });
+            player.on('trackStart', (queue, track) => {
+                interaction.channel.send({ content: `🎶 | Now playing **${track.title}** !` })
+            })
             interaction.client.player = player;
             return player;
         } )();
@@ -45,15 +48,65 @@ module.exports = {
         const track = await player.search(query, {
             requestedBy: interaction.user
         }).then(x => x.tracks[0]);
-        if (!track) return await interaction.followUp({ content: `❌ | Track **${query}** not found!` });
+        if (!track) return await interaction.editReply({ content: `❌ | Track **${query}** not found!` });
 
         if (!track.playlist) {
-            await interaction.followUp({ content: `👌 | Queue **${track.title}** !`, ephemeral: true });
-            queue.play(track);
+            await interaction.editReply({ content: `👌 | Queue **${track.title}** !`, ephemeral: true });
+            queue.addTrack(track);
         } else {
-            await interaction.followUp({ content: `👌 | Queue **${track.playlist.tracks.length} tracks** !`, ephemeral: true });
+            await interaction.editReply({ content: `👌 | Queue **${track.playlist.tracks.length} tracks** !`, ephemeral: true });
             queue.addTracks(track.playlist.tracks);
-            queue.play();
         }
-    },    
+        if (queue.nowPlaying().id == track.id) queue.play( undefined, {leaveOnEmptyCooldown : 5*60*1000});
+        return;
+    },
+    
+    async handleMessage(message) {
+        const args = message.content.split(' ');
+        args.shift();
+        const query = args.join(' ');
+
+        const player = message.client.player || ( () => {
+        let player = new Player(message.client, { filter: "audioonly" });
+            player.on('trackStart', (queue, track) => {
+                message.channel.send({ content: `🎶 | Now playing **${track.title} tracks** !` })
+            })
+            message.client.player = player;
+            return player;
+        } )();
+
+        const queue = player.getQueue(message.guild) || 
+            player.createQueue(message.guild, {
+                metadata: {
+                    channel: message.channel
+                }
+            });
+
+        // verify vc connection
+        try {
+            if (!queue.connection) await queue.connect(message.member.voice.channel);
+        } catch {
+            queue.destroy();
+            return message.channel.send({ content: "Could not join your voice channel!" });
+        }
+
+        const track = await player.search(query, {
+            requestedBy: message.user
+        }).then(x => x.tracks[0]);
+        if (!track) return message.channel.send({ content: `❌ | Track **${query}** not found!` });
+
+        if (!track.playlist) {
+            await message.channel.send({ content: `👌 | Queue **${track.title}** !`});
+            queue.addTrack(track);
+        } else {
+            await message.channel.send({ content: `👌 | Queue **${track.playlist.tracks.length} tracks** !`});
+            queue.addTracks(track.playlist.tracks);
+        }
+        if (queue.nowPlaying().id == track.id) queue.play( undefined, {leaveOnEmptyCooldown : 5*60*1000});
+        return;
+    },
+
+    // handleMessage(message) {
+
+    // },
 };

@@ -1,18 +1,26 @@
-
 module.exports = {
-	name: 'interactionCreate',
-	async handleEvent(interaction) {
+  name: 'interactionCreate',
+  async handleEvent(interaction) {
 
-    if (!interaction.isCommand()) return;
-    const command = interaction.client.commands.get(interaction.commandName);
-  
-    if (!command) return;
-  
     try {
-      await command.execute(interaction);
+      if (interaction.isButton()) {
+        //Handle button interaction
+        const buttonName = interaction.message.components[0].components[0].label;
+        const buttonHandler = interaction.client.buttonHandlers.get(buttonName.toLowerCase());
+        return await buttonHandler.execute(interaction);
+        
+      } else if (interaction.isCommand()) {
+        //Handle command interaction
+
+        const command = interaction.client.commands.get(interaction.commandName);
+        if (!command) return;
+        return await command.execute(interaction);
+      }
     } catch (error) {
       console.error(error);
-      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+      if (!interaction.replied) {
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+      }
     }
-	},
+  },
 };

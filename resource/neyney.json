@@ -1,0 +1,27 @@
+{
+    "name": "Thi Hai Yen, Nguyen",
+    "avatarURL": "https://i.imgur.com/AfFp7pu.png",
+    "description": "3rd year Student of Business Informatics",
+    "github" : {
+        "url": "https://github.com/neyney2810",
+        "tag": "neyney2810"
+    },
+    "facebook": {
+        "name": "Nguyễn Yến",
+        "tag" : "yen.ng.5815",
+        "url" : "https://www.facebook.com/yen.ng.5815/"
+    },
+    "instagram": {
+        "tag": "@yen.ng.5815",
+        "url": "https://www.instagram.com/yen.ng.5815/"
+    },
+    "discord": {
+        "tag": "NeyNey#2876"
+    },
+    "landingPage": {
+        "url": "https://github.com/neyney2810"
+    },
+    "donate": {
+        "url": "https://github.com/neyney2810"
+    }
+}

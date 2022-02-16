@@ -37,8 +37,14 @@ module.exports = {
             autoplay: QueueRepeatMode.AUTOPLAY
         }
         const subcommand = interaction.options.getSubcommand();
+        console.log(subcommand);
         const repeatMode = subcommand ? subcommands[subcommand] : QueueRepeatMode.QUEUE;
         queue.setRepeatMode(repeatMode);
-        return await interaction.reply(subcommand?.description || 'Repeat current playlist');
+        return await interaction.reply(`💗 | Repeat mode: ${subcommand}`);
     },
+
+    
+    // handleMessage(message) {
+
+    // },
 };

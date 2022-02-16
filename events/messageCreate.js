@@ -12,6 +12,7 @@ module.exports = {
                         message.client.commands.get(cmd.substring(1,))?.handleMessage(message);
 
                 } catch (error) {
+                        console.log(error);
                 }
         },
 };
