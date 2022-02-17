@@ -1,9 +1,13 @@
+require('dotenv').config();
+console.log(process.env);
+
 //Register a slash command against the discord api
 const { readdirSync } = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const Ascii = require('ascii-table');
-const { CLIENT_ID, GUILD_ID, token } = require('./config.json');
+const { CLIENT_ID } = require('./config.json');
+const { DISCORD_TOKEN : token } = process.env;
 
 
 const commands = [];
