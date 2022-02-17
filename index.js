@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const { readdirSync } = require('fs');
 const { Client, Intents, Collection } = require('discord.js');
 const { createPool } = require('mysql2/promise');
-const { token, mysql: dbConfig } = require('./config.json');
+
+const { mysql: dbConfig } = require('./config.json');
+const { MYSQL_USERNAME, MYSQL_PASSWORD, DISCORD_TOKEN } = process.env;
 
 const client = new Client({ intents: [ 
   Intents.FLAGS.GUILDS, 
@@ -14,8 +18,8 @@ const client = new Client({ intents: [
 client.mysql = createPool({
   host: dbConfig.host,
   port: dbConfig.port || 3306,
-  user: dbConfig.username,
-  password: dbConfig.password,
+  user: MYSQL_USERNAME,
+  password: MYSQL_PASSWORD,
   database: dbConfig.database,
   charset: dbConfig.charset
 });
@@ -53,4 +57,4 @@ readdirSync('./buttons/').filter(file => !file.includes('.')).forEach(dir => {
 });
 
 
-client.login(token);
+client.login(DISCORD_TOKEN);

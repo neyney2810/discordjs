@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const { giphy_api_key } = require('../../config.json')
+const { GIPHY_API_KEY } = process.env;
 const axios = require('axios');
 
 module.exports = {
@@ -41,6 +41,6 @@ const fetchGifURL = async (keyword) => {
         `q=${keyword.replaceAll(" ","+")}`+
         '&limit=1'+
         '&offset=0'+
-        `&api_key=${giphy_api_key}`);
+        `&api_key=${GIPHY_API_KEY}`);
     return { direct: res.data.data[0].images.original.url, short: res.data.data[0].bitly_url};
 }

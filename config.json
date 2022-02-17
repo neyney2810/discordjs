@@ -1,0 +1,16 @@
+{
+    "prefix" : "!",
+    "CLIENT_ID" : "933021357829152778",
+    "GUILD_ID" : "926875819836584028",
+    "mysql": {
+        "host": "127.0.0.1",
+        "port": "3306",
+        "database": "discordbot",
+        "charset": "utf8mb4_unicode_ci"
+    },
+
+    "discord-api": {
+        "CLIENT_ID" : "933021357829152778",
+        "GUILD_ID" : "926875819836584028"
+    }
+} 

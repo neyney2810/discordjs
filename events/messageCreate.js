@@ -1,4 +1,4 @@
-const { prefix } = require('../public_config.json');
+const { prefix } = require('../config.json');
 
 module.exports = {
         name: 'messageCreate',
