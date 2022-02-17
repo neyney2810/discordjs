@@ -1,0 +1,32 @@
+{
+    "client-secret-token" : "MZflhFmC74wygY5wZvWDWkPhor5qRKTJ",
+    "token" : "OTMzMDIxMzU3ODI5MTUyNzc4.Yebd2g.DvgmYWT0j_4bqU-q3oGNzW-TlEU",
+    "CLIENT_ID" : "933021357829152778",
+    "GUILD_ID" : "926875819836584028",
+    "giphy_api_key": "fZ9Bt9bSYNr3EGUxq0dh6VoKvJXm3NV2",
+
+    "mysql": {
+        "host": "127.0.0.1",
+        "port": "3306",
+        "username": "root",
+        "password": "123456",
+        "database": "discordbot",
+        "charset": "utf8mb4_unicode_ci"
+    },
+
+    "discord-api": {
+        "client-secret-token" : "MZflhFmC74wygY5wZvWDWkPhor5qRKTJ",
+        "token" : "OTMzMDIxMzU3ODI5MTUyNzc4.Yebd2g.DvgmYWT0j_4bqU-q3oGNzW-TlEU",
+        "CLIENT_ID" : "933021357829152778",
+        "GUILD_ID" : "926875819836584028"
+    },
+
+    "giphy-api": {
+        "api_key": "fZ9Bt9bSYNr3EGUxq0dh6VoKvJXm3NV2"
+    },
+
+    "spotify": {
+        "token" : "BQAOixBwAXFif6FW7oWNchrw81h4ypngXNTpEySC_tgWFv2n2TbjxHWGe6PPABGWVZrKCrj55xqc0vIEk8ht_28ZwvgljEUfXk3Vbzx0zstFesJ86ziNwIC-0kn2jQeLN1EiiF33OQNsTb4Ym58AhfDP0L0DCIwUEys"
+    }
+
+}
