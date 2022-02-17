@@ -1,4 +1,5 @@
 require('dotenv').config();
+console.log(process.env);
 
 const { readdirSync } = require('fs');
 const { Client, Intents, Collection } = require('discord.js');
