@@ -3,7 +3,12 @@ const { Client, Intents, Collection } = require('discord.js');
 const { createPool } = require('mysql2/promise');
 const { token, mysql: dbConfig } = require('./config.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const client = new Client({ intents: [ 
+  Intents.FLAGS.GUILDS, 
+  Intents.FLAGS.GUILD_MESSAGES, 
+  Intents.FLAGS.GUILD_VOICE_STATES, 
+  Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+]});
 
 //Db connection
 client.mysql = createPool({

@@ -58,8 +58,4 @@ module.exports = {
     return await interaction.reply(` 👌 | Set mode to **${mode}**! `);
   },
 
-
-  // handleMessage(message) {
-  //     this.execute(message);
-  // },
 };

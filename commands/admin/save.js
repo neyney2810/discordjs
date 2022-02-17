@@ -10,7 +10,6 @@ module.exports = {
                 .setDescription('Playlist name')
                 .setRequired(true)),
     async execute(interaction) {
-        
 
         if (!checkAudioCommandPermission(interaction))
             return await interaction.reply({ content: "Can not do this command!", ephemeral: true });
@@ -29,22 +28,22 @@ module.exports = {
 
         //Check user => create a user
         await mysql.query(`INSERT IGNORE INTO user(iduser, idguild, iddiscord) VALUES ("${userId}", "${interaction.guildId}", "${interaction.user.id}" )`)
-        const [ playlists ] = await mysql.query(`SELECT * FROM music_playlist WHERE iduser = "${userId}" AND name = "${playlistName}"`);
+        const [playlists] = await mysql.query(`SELECT * FROM music_playlist WHERE iduser = "${userId}" AND name = "${playlistName}"`);
 
         if (playlists.length == 0) {
             //Create playlist
-            const [ newPlaylist ] = await mysql.query(`INSERT INTO music_playlist(iduser, name) VALUES ("${userId}", "${playlistName}")`);
+            const [newPlaylist] = await mysql.query(`INSERT INTO music_playlist(iduser, name) VALUES ("${userId}", "${playlistName}")`);
 
             //Create tracks
             const info = {};
             for (const track of queue.previousTracks.concat(queue.tracks)) {
-                info[track.id] = [ track.url, track.title, newPlaylist.insertId ]
+                info[track.id] = [track.url, track.title, newPlaylist.insertId]
             }
             mysql.query(`INSERT INTO track(url, title, idmusic_playlist) VALUES ?`, [Object.values(info)]);
             mysql.query(`UPDATE user SET default_music_playlist = ${newPlaylist.insertId} WHERE iduser = "${userId}" AND default_music_playlist IS NULL`);
             return await interaction.reply(` ✅ | Saved to playlist **${playlistName}**`);
         } else {
-            await interaction.reply( { content: ` Playlist is available. Replace it? (Default: not)`});
+            await interaction.reply({ content: ` Playlist is available. Replace it? (Default: not)` });
 
             const message = await interaction.fetchReply();
 
@@ -65,7 +64,7 @@ module.exports = {
                     //Create tracks
                     const info = {};
                     for (const track of queue.previousTracks.concat(queue.tracks)) {
-                        info[track.id] = [ track.url, track.title, playlists[0].idmusic_playlist ]
+                        info[track.id] = [track.url, track.title, playlists[0].idmusic_playlist]
                     }
                     mysql.query(`INSERT INTO track(url, title, idmusic_playlist) VALUES ?`, [Object.values(info)]);
                     return await message.channel.send(`Successfully update playlist **${playlistName}`);
@@ -76,7 +75,71 @@ module.exports = {
 
     },
 
-    // handleMessage(message) {
-    //     this.execute(message);
-    // },
+    async handleMessage(message) {
+
+        if (!checkAudioCommandPermission(message))
+            return await message.reply({ content: "Can not do this command!", ephemeral: true });
+
+        if (!checkPlayerRunning(message))
+            return await message.reply({ content: "Can not clear as no player is running!", ephemeral: true });
+
+        const mysql = message.client.mysql;
+        if (!mysql) return await message.reply({ content: "Can not create a playlist", ephemeral: true });
+
+        const args = message.content.split(' ');
+        args.shift();
+        const playlistName = args.join(' ');
+
+        const userId = message.author.id + message.guildId;
+        const queue = message.client.player.getQueue(message.guild);
+
+
+        //Check user => create a user
+        await mysql.query(`INSERT IGNORE INTO user(iduser, idguild, iddiscord) VALUES ("${userId}", "${message.guildId}", "${message.user.id}" )`)
+        const [playlists] = await mysql.query(`SELECT * FROM music_playlist WHERE iduser = "${userId}" AND name = "${playlistName}"`);
+
+        if (playlists.length == 0) {
+            //Create playlist
+            const [newPlaylist] = await mysql.query(`INSERT INTO music_playlist(iduser, name) VALUES ("${userId}", "${playlistName}")`);
+
+            //Create tracks
+            const info = {};
+            for (const track of queue.previousTracks.concat(queue.tracks)) {
+                info[track.id] = [track.url, track.title, newPlaylist.insertId]
+            }
+            mysql.query(`INSERT INTO track(url, title, idmusic_playlist) VALUES ?`, [Object.values(info)]);
+            mysql.query(`UPDATE user SET default_music_playlist = ${newPlaylist.insertId} WHERE iduser = "${userId}" AND default_music_playlist IS NULL`);
+            return await message.reply(` ✅ | Saved to playlist **${playlistName}**`);
+        } else {
+            await message.reply({ content: ` Playlist is available. Replace it? (Default: not)` });
+
+            const message = await message.fetchReply();
+
+            message.react('✅');
+            message.react('❌');
+
+            const filter = (reaction, user) => {
+                return (reaction.emoji.name === '✅' || reaction.emoji.name === '❌') && user.id === message.user.id;
+            };
+            const collector = message.createReactionCollector({ filter, time: 15000 });
+
+            collector.on('collect', async (reaction) => {
+                message.reactions.removeAll();
+                if (reaction.emoji.name === '✅') {
+                    //DELETE all the current tracks
+                    await mysql.query(`DELETE FROM track WHERE idmusic_playlist = ${playlists[0].idmusic_playlist}`);
+                    //INSERT all new tracks
+                    //Create tracks
+                    const info = {};
+                    for (const track of queue.previousTracks.concat(queue.tracks)) {
+                        info[track.id] = [track.url, track.title, playlists[0].idmusic_playlist]
+                    }
+                    mysql.query(`INSERT INTO track(url, title, idmusic_playlist) VALUES ?`, [Object.values(info)]);
+                    return await message.channel.send(`Successfully update playlist **${playlistName}`);
+                } else return await message.channel.send("Save failed. Please choose another name");
+
+            });
+        }
+
+    },
 };

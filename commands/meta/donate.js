@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+const neyney = require('../../resource/neyney.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,9 +19,7 @@ module.exports = {
             )
             .setDescription(neyney.description)
             .setThumbnail(neyney.avatarURL)
-            .addField(
-                { name: 'Buy me a coffee', value: neyney.donate.url },
-            )
+            .addField( 'Buy me a coffee', neyney.donate.url )
             .setImage(neyney.avatarURL)
             .setTimestamp()
             .setFooter({ text: 'Some footer text here', iconURL: neyney.avatarURL});

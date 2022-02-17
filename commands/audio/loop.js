@@ -37,14 +37,33 @@ module.exports = {
             autoplay: QueueRepeatMode.AUTOPLAY
         }
         const subcommand = interaction.options.getSubcommand();
-        console.log(subcommand);
         const repeatMode = subcommand ? subcommands[subcommand] : QueueRepeatMode.QUEUE;
         queue.setRepeatMode(repeatMode);
         return await interaction.reply(`💗 | Repeat mode: ${subcommand}`);
     },
 
     
-    // handleMessage(message) {
+    async handleMessage(message) {
+        if (!checkAudioCommandPermission(interaction)) 
+            return await interaction.reply({ content: "You have not joined a channel or I'm playing in another channel!", ephemeral: true });
 
-    // },
+        if (!checkPlayerRunning(interaction)) 
+            return await interaction.reply({ content: "Can not loop as no player is running!", ephemeral: true });
+
+        const queue = interaction.client.player.getQueue(interaction.guild);
+        
+        //LOOP
+        const subcommands = {
+            off: QueueRepeatMode.OFF,
+            current: QueueRepeatMode.TRACK,
+            all: QueueRepeatMode.QUEUE,
+            autoplay: QueueRepeatMode.AUTOPLAY
+        }
+
+        const subcommand = message.content.split(' ')[1].toLowerCase();
+
+        const repeatMode = subcommand ? subcommands[subcommand] : QueueRepeatMode.QUEUE;
+        queue.setRepeatMode(repeatMode);
+        return await interaction.reply(`💗 | Repeat mode: ${subcommand}`);
+    },
 };
