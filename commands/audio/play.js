@@ -25,7 +25,7 @@ module.exports = {
             let player = new Player(interaction.client, { filter: "audioonly" });
 
             player.on('trackStart', (queue, track) => {
-                interaction.channel.send({ content: `🎶 | Now playing **${track.title}** !` })
+                // interaction.channel.send({ content: `🎶 | Now playing **${track.title}** !` })
             })
 
             player.on('connectionError', (queue, error) => {
