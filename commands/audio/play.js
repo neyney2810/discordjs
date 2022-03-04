@@ -80,9 +80,9 @@ module.exports = {
         const player = message.client.player || (() => {
             let player = new Player(interaction.client, { filter: "audioonly" });
 
-            player.on('trackStart', (queue, track) => {
-                interaction.channel.send({ content: `🎶 | Now playing **${track.title}** !` })
-            })
+            // player.on('trackStart', (queue, track) => {
+            //     interaction.channel.send({ content: `🎶 | Now playing **${track.title}** !` })
+            // })
 
             player.on('connectionError', (queue, error) => {
                 queue.play(undefined, { leaveOnEmptyCooldown: 5 * 60 * 1000 });
